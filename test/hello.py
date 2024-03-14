@@ -3,7 +3,9 @@ import sqlite3
 from flask import *
 
 Flask.secret_key = '865b1f2be442d4762ab8c67738598d7eb93e73ca3f7acf95e1c9064b56e3732f'
+
 app = Flask(__name__)
+
 #nom de la base de donnee sqlite
 DATABASE = 'demoFlask.db'
 #connection a la base de donnee
