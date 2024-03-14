@@ -4,13 +4,7 @@
         <title>Playliste</title>
     </head>
     <body>
-        <header>
-            <h1>Bienvenu dans La Home de {{ id }}</h1>
-            <nav>
-                <a href="/home/list" >Voir liste</a>
-                <a href="/home/ajout" >Ajout iframe</a>
-            </nav>
-        </header>
+        {% include 'header.html' %}
         <section>
             <ul>
             {% for liste in lists %}
