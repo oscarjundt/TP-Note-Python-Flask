@@ -1,5 +1,20 @@
-<form method="post" action="/home/ajout">
-    <input type="text" name="title"/>
-    <input type="url" name="url"/>
-    <input type="submit" value="fin"/>
-</form>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Playliste</title>
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
+	</head>
+	<body>
+        <header>
+        <h1>Ajout Iframe</h1>
+        {% include 'header.html' %}
+        </header>
+		<form method="post" action="/home/ajout">
+            <input type="text" name="title" placeholder="donner Titre"/>
+            <br>
+            <input type="url" name="url" placeholder="donner url iframe"/>
+            <br>
+            <input type="submit" value="fin"/>
+        </form>
+	</body>
+</html>

@@ -3,13 +3,16 @@
     <head>
         <style>
             #tab-liste{
+                width: 100%;
                 border: double;
                 border-color: black;
-                width: 100%;
             }
             #tab-liste thead {
                 background-color: green;
                 color: white;
+            }
+            #tab-liste tbody{
+                background-color: white;
             }
             #tab-liste tr td{
                 border: double;
@@ -17,9 +20,13 @@
             }
         </style>
         <title>Playliste</title>
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" />
     </head>
     <body>
+        <header>
+        <h1>Liste des Iframe</h1>
         {% include 'header.html' %}
+        </header>
         <section>
             <table id="tab-liste">
                 <thead>
