@@ -62,7 +62,7 @@ def indexHome():
 def connect():
 	url = "/"
 	data = query("select id,username,password from login where username='"+request.form["username"]+"'")
-	if(data is not None):
+	if(data is not None and len(data)):
 		if str(request.form["password"])==str(data[0][2]) :
 			url="/home"
 			session["username"]=request.form["username"]
