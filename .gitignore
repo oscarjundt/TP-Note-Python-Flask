@@ -1,2 +1,2 @@
 *.db
-test/.venv
+/test/.venv
