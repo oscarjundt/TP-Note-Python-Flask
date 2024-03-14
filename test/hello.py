@@ -25,7 +25,9 @@ def query(sql):
 	rv = cur.fetchall()
 	cur.close()
 	return rv
-
+def insert(sql):
+	cur = get_db().execute(sql)
+	cur.close()
 #metode pour la route / qui affiche la page de login
 @app.get("/")
 def indexLogin():
@@ -54,17 +56,19 @@ def test():
 @app.post("/connect")
 def connect():
 	url = "/"
-	data = query("select username,password from login where username='"+request.form["username"]+"'")
+	data = query("select id,username,password from login where username='"+request.form["username"]+"'")
 	if(data is not None):
-		if str(request.form["password"])==str(data[0][1]) :
+		if str(request.form["password"])==str(data[0][2]) :
 			url="/home"
-			session["id"]=request.form["username"]
+			session["username"]=request.form["username"]
+			session["id"] = data[0][0]
 	return redirect(url)
 #methode pour la route /quit, deconnecte l'utilisateur
 #supprime la session
 @app.get("/quit")
 def deconnect():
 	url = "/"
+	session.pop('username', None)
 	session.pop('id', None)
 	return redirect(url)
 
@@ -72,7 +76,7 @@ def deconnect():
 @app.get("/home/list")
 def index_liste():
 	if "id"  in session :
-		data = query("select iframe.id,title,url from iframe join login on iframe.idLogin=login.id where username='"+session["id"]+"'")
+		data = query("select iframe.id,title,url from iframe join login on iframe.idLogin=login.id where username='"+session["username"]+"'")
 		return render_template("liste.html",lists=data)
 	else:
 		abort(403)
@@ -80,7 +84,22 @@ def index_liste():
 @app.get("/home/video/<id>")
 def index_iframe(id):
 	if "id"  in session :
-		data = query("select title,url from iframe join login on iframe.idLogin=login.id where username='"+session["id"]+"' and iframe.id="+id)
+		data = query("select title,url from iframe join login on iframe.idLogin=login.id where username='"+session["username"]+"' and iframe.id="+id)
 		return  render_template("iframe.html",iframe=data)
 	else:
 		abort(403)
+@app.get("/home/ajout")
+def index_ajout():
+	if "id"  in session :
+		return  render_template("ajout.html")
+	else:
+		redirect("/")
+@app.post("/home/ajout")
+def index_ajout_iframe():
+	if "id"  in session :
+		if(request.form["title"] and request.form["url"]):
+			return "hello"
+			#data = insert("insert into iframe (title,url,idLogin) values ('"+request.form["title"]+"','"+request.form["url"]+"',"+str(session["id"])+")")
+	else:
+		abort(403)
+	
