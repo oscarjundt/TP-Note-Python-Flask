@@ -4,6 +4,8 @@
 <p>
 site simple pour voir les base de flask
 </p>
+<strong>Installation de python 3 : sudo apt install python3</string>
+<strong>Installation de flask : pip install flask</strong>
 
 <ul>
 <li>test(appli)
