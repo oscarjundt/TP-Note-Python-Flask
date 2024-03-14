@@ -11,5 +11,12 @@
                 <a href="/home/ajout" >Ajout iframe</a>
             </nav>
         </header>
+        <section>
+            <ul>
+            {% for liste in lists %}
+                <li><a href="/home/video/{{liste[0]}}">{{liste[1]}}</a></li>
+            {% endfor %}
+            </ul>
+        </section>
     </body>
 </html>

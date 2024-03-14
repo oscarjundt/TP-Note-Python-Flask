@@ -54,7 +54,7 @@ def test():
 @app.post("/connect")
 def connect():
 	url = "/"
-	data = query("select id,password from login where id='"+request.form["username"]+"'")
+	data = query("select username,password from login where username='"+request.form["username"]+"'")
 	if(data is not None):
 		if str(request.form["password"])==str(data[0][1]) :
 			url="/home"
@@ -67,3 +67,20 @@ def deconnect():
 	url = "/"
 	session.pop('id', None)
 	return redirect(url)
+
+
+@app.get("/home/list")
+def index_liste():
+	if "id"  in session :
+		data = query("select iframe.id,title,url from iframe join login on iframe.idLogin=login.id where username='"+session["id"]+"'")
+		return render_template("liste.html",lists=data)
+	else:
+		abort(403)
+
+@app.get("/home/video/<id>")
+def index_iframe(id):
+	if "id"  in session :
+		data = query("select title,url from iframe join login on iframe.idLogin=login.id where username='"+session["id"]+"' and iframe.id="+id)
+		return  render_template("iframe.html",iframe=data)
+	else:
+		abort(403)
