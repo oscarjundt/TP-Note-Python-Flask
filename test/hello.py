@@ -62,7 +62,7 @@ def indexHome():
 def connect():
 	url = "/"
 	data = query("select id,username,password from login where username='"+request.form["username"]+"'")
-	if(data is not None and len(data)):
+	if(data is not None and len(data)!=0):
 		if str(request.form["password"])==str(data[0][2]) :
 			url="/home"
 			session["username"]=request.form["username"]
@@ -107,9 +107,10 @@ def index_ajout():
 @app.post("/home/ajout")
 def index_ajout_iframe():
 	if "id" in session :
-		if(request.form["title"] and request.form["url"]):
+		if(request.form["title"]!=None and request.form["title"] and request.form["url"]!=None and request.form["url"]):
 			data = insert("insert into iframe (title,url,idLogin) values ('"+request.form["title"]+"','"+request.form["url"]+"',"+str(session['id'])+")")
 			return redirect('/home/list')
+		return redirect('/home/ajout')
 	else:
 		abort(403)
 
