@@ -54,11 +54,6 @@ def indexHome():
 	else : 
 		return redirect('/')
 
-#methode pour le
-@app.get("/test")
-def test():
-	data = query("select id,password from login where id='"+"oscar"+"'")
-	return data[0][1]
 
 #methode pour la route post /connect qui traite les formulaire de login
 # si l'utilisateur existe en BDD, rediriger vers /home et creer une session avec en valeur l'identifient
