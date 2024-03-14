@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+            #tab-liste{
+                border: double;
+                border-color: black;
+                width: 100%;
+            }
+            #tab-liste thead {
+                background-color: green;
+                color: white;
+            }
+            #tab-liste tr td{
+                border: double;
+                border-color: black;
+            }
+        </style>
         <title>Playliste</title>
     </head>
     <body>
         {% include 'header.html' %}
         <section>
-            <ul>
+            <table id="tab-liste">
+                <thead>
+                <tr><td>Action</td><td>Lien video</td></tr>
+                </thead>
+                <tbody>
             {% for liste in lists %}
-                <li><a href="/home/video/{{liste[0]}}">{{liste[1]}}</a></li>
+                <tr><td><a href="/home/supp/{{liste[0]}}">supprimer</a></td><td><a href="/home/video/{{liste[0]}}">{{liste[1]}}</a></td></tr>
             {% endfor %}
-            </ul>
+                </tbody>
+            </table>
         </section>
     </body>
 </html>

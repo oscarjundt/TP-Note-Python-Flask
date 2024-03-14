@@ -27,7 +27,7 @@ def query(sql):
 	return rv
 def insert(sql):
 	cur = get_db().execute(sql)
-	cur.close()
+	get_db().commit()
 #metode pour la route / qui affiche la page de login
 @app.get("/")
 def indexLogin():
@@ -72,34 +72,47 @@ def deconnect():
 	session.pop('id', None)
 	return redirect(url)
 
-
+#methode pour la route /home/list
+#cette methode recupere les iframe en BDD et les revoit a la vue liste.html
 @app.get("/home/list")
 def index_liste():
-	if "id"  in session :
+	if "id" in session :
 		data = query("select iframe.id,title,url from iframe join login on iframe.idLogin=login.id where username='"+session["username"]+"'")
 		return render_template("liste.html",lists=data)
 	else:
 		abort(403)
-
+#methode pour la route /home/video/{id}
+#methode qui recupere un iframe en fonction de sont identifiant
 @app.get("/home/video/<id>")
 def index_iframe(id):
-	if "id"  in session :
+	if "id" in session :
 		data = query("select title,url from iframe join login on iframe.idLogin=login.id where username='"+session["username"]+"' and iframe.id="+id)
 		return  render_template("iframe.html",iframe=data)
 	else:
 		abort(403)
+#methode pour la route /home/ajout
+#affiche la vue du formulaire pour ajouter un iframe
 @app.get("/home/ajout")
 def index_ajout():
-	if "id"  in session :
+	if "id" in session :
 		return  render_template("ajout.html")
 	else:
 		redirect("/")
+#ajout d'un iframe methode post
 @app.post("/home/ajout")
 def index_ajout_iframe():
-	if "id"  in session :
+	if "id" in session :
 		if(request.form["title"] and request.form["url"]):
-			return "hello"
-			#data = insert("insert into iframe (title,url,idLogin) values ('"+request.form["title"]+"','"+request.form["url"]+"',"+str(session["id"])+")")
+			data = insert("insert into iframe (title,url,idLogin) values ('"+request.form["title"]+"','"+request.form["url"]+"',"+str(session['id'])+")")
+			return redirect('/home/list')
 	else:
 		abort(403)
-	
+
+#suppression d'un iframe en fonction de sont identifiant
+@app.get("/home/supp/<id>")
+def supp_iframe(id):
+	if "id" in session :
+			data = insert("delete from iframe where id="+id)
+			return redirect('/home/list')
+	else:
+		abort(403)
