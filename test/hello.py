@@ -1,5 +1,6 @@
 #imporation des bibilioteque utiliser
 import sqlite3
+from pathlib import Path
 from flask import *
 
 Flask.secret_key = '865b1f2be442d4762ab8c67738598d7eb93e73ca3f7acf95e1c9064b56e3732f'
@@ -14,6 +15,15 @@ def get_db():
 	if db is None:
 		db = g._database = sqlite3.connect(DATABASE)
 	return db
+
+def init_db():
+	if not Path(DATABASE).exists():
+		with app.app_context():
+			db = get_db()
+			with app.open_resource('script.sql', mode='r') as f:
+				db.cursor().executescript(f.read())
+			db.commit()
+init_db()
 #fermeture de la connection a la base de donnee
 @app.teardown_appcontext
 def close_connection(exception):
